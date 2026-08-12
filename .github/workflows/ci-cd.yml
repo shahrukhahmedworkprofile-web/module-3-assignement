@@ -26,3 +26,24 @@ jobs:
         with:
           name: test-results
           path: test-results.txt
+
+  deploy:
+    name: Deploy Application
+    needs: test
+    runs-on: [self-hosted, private-ec2]
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Download test results
+        uses: actions/download-artifact@v4
+        with:
+          name: test-results
+          path: test-results
+
+      - name: Display test results
+        run: |
+          echo "===== TEST RESULTS ====="
+          cat test-results/test-results.txt
+          echo "===== END TEST RESULTS ====="
