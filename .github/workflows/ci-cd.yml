@@ -27,7 +27,7 @@ jobs:
           name: test-results
           path: test-results.txt
 
-    deploy:
+  deploy:
     name: Deploy Application
     needs: test
     runs-on: [self-hosted, private-ec2]
