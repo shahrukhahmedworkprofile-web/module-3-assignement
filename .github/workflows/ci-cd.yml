@@ -27,7 +27,7 @@ jobs:
           name: test-results
           path: test-results.txt
 
-  deploy:
+    deploy:
     name: Deploy Application
     needs: test
     runs-on: [self-hosted, private-ec2]
@@ -47,3 +47,23 @@ jobs:
           echo "===== TEST RESULTS ====="
           cat test-results/test-results.txt
           echo "===== END TEST RESULTS ====="
+
+      - name: Deploy application files
+        run: |
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            ./ /home/ubuntu/app/module-3-assignement/
+
+      - name: Install production dependencies
+        working-directory: /home/ubuntu/app/module-3-assignement
+        run: npm ci
+
+      - name: Restart Node.js application
+        run: sudo systemctl restart node-app
+
+      - name: Verify application
+        run: |
+          sleep 2
+          sudo systemctl is-active --quiet node-app
+          curl -f http://localhost:3000/api
