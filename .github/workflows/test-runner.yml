@@ -19,7 +19,7 @@ jobs:
       - name: Run tests
         run: npm run check
 
-  deploy:
+    deploy:
     needs: test
     runs-on: self-hosted
 
@@ -29,8 +29,10 @@ jobs:
 
       - name: Deploy application
         run: |
-          rm -rf /home/ubuntu/app/*
-          cp -r . /home/ubuntu/app/
+          rsync -a --delete \
+            --exclude='.git' \
+            --exclude='node_modules' \
+            ./ /home/ubuntu/app/
 
       - name: Install production dependencies
         working-directory: /home/ubuntu/app
