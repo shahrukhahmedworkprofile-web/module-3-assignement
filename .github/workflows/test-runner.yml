@@ -1,0 +1,24 @@
+name: Test Self-Hosted Runner
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  test-runner:
+    runs-on: self-hosted
+
+    steps:
+      - name: Show runner information
+        run: |
+          echo "===== RUNNER TEST ====="
+          echo "Hostname:"
+          hostname
+          echo "Operating System:"
+          uname -a
+          echo "User:"
+          whoami
+          echo "Working Directory:"
+          pwd
+          echo "===== TEST COMPLETE ====="
