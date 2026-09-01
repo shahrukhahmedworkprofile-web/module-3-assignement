@@ -1,4 +1,4 @@
-name: Test Self-Hosted Runner
+name: Deploy Application
 
 on:
   push:
@@ -6,16 +6,20 @@ on:
       - main
 
 jobs:
-  test-runner:
+  deploy:
     runs-on: self-hosted
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Show repository files
+      - name: Deploy application
         run: |
-          echo "===== REPOSITORY ====="
-          pwd
-          ls -la
-          echo "===== TEST COMPLETE ====="
+          rm -rf /home/ubuntu/app/*
+          cp -r . /home/ubuntu/app/
+
+      - name: Verify deployment
+        run: |
+          echo "===== DEPLOYED FILES ====="
+          ls -la /home/ubuntu/app
+          echo "===== DEPLOYMENT COMPLETE ====="
