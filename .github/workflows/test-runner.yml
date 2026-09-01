@@ -1,4 +1,5 @@
 name: Node.js CI/CD
+name: Node.js CI/CD
 
 on:
   push:
@@ -29,13 +30,18 @@ jobs:
 
       - name: Deploy application
         run: |
-          rsync -av --delete --exclude='.git' ./ /home/ubuntu/app/
+          rm -rf /home/ubuntu/app/*
+          cp -r . /home/ubuntu/app/
+
+      - name: Install production dependencies
+        working-directory: /home/ubuntu/app
+        run: npm ci --omit=dev
+
+      - name: Restart application
+        run: sudo systemctl restart node-app
 
       - name: Verify deployment
         run: |
-          ls -la /home/ubuntu/app
-
-      - name: Restart application
-        run: |
-          sudo systemctl restart node-app
+          sleep 3
           sudo systemctl status node-app --no-pager
+          curl -f http://localhost:3000/api
