@@ -10,15 +10,12 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      - name: Show runner information
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Show repository files
         run: |
-          echo "===== RUNNER TEST ====="
-          echo "Hostname:"
-          hostname
-          echo "Operating System:"
-          uname -a
-          echo "User:"
-          whoami
-          echo "Working Directory:"
+          echo "===== REPOSITORY ====="
           pwd
+          ls -la
           echo "===== TEST COMPLETE ====="
