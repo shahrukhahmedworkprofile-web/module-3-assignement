@@ -29,8 +29,7 @@ jobs:
 
       - name: Deploy application
         run: |
-          rm -rf /home/ubuntu/app/*
-          cp -r . /home/ubuntu/app/
+          rsync -av --delete --exclude='.git' ./ /home/ubuntu/app/
 
       - name: Verify deployment
         run: |
