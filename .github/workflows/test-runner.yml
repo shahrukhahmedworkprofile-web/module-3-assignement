@@ -34,3 +34,8 @@ jobs:
       - name: Verify deployment
         run: |
           ls -la /home/ubuntu/app
+
+      - name: Restart application
+        run: |
+          sudo systemctl restart node-app
+          sudo systemctl status node-app --no-pager
